@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Himalayan Routes — Himachal Pradesh Bus Timetables, HRTC, Volvo & Private Routes</title>
+  <meta name="description" content="Comprehensive bus information portal for Himachal Pradesh. Search HRTC Volvo/Himsuta, ordinary, electric, private operators, local village routes, timetables & bus stands across Kangra, Shimla, Mandi, Kullu and all 12 districts.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet Maps CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Site Top Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a class="brand-logo" data-view="home">
+        <div class="brand-icon">🏔️</div>
+        <div>
+          <span class="brand-title">HIMALAYAN ROUTES</span>
+          <span class="brand-tagline">Your Guide to Bus Routes Across Himachal Pradesh</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav">
+        <button class="nav-btn active" data-view="home">🏠 Home</button>
+        <button class="nav-btn" data-view="search">🔍 Search</button>
+        <button class="nav-btn" data-view="hrtc">🏔️ HRTC</button>
+        <button class="nav-btn" data-view="volvo">⭐ Volvo / Himsuta</button>
+        <button class="nav-btn" data-view="private">🚍 Private</button>
+        <button class="nav-btn" data-view="local">🌾 Local Routes</button>
+        <button class="nav-btn" data-view="districts">🗺️ Districts</button>
+        <button class="nav-btn" data-view="busStands">🏣 Bus Stands</button>
+        <button class="nav-btn" data-view="map">📍 Map</button>
+        <button class="nav-btn add-operator-btn" id="open-add-operator-modal">+ Add Operator</button>
+        <button class="nav-btn admin-btn" data-view="admin">🛡️ Admin</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section & Main Search Engine -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">HIMALAYAN ROUTES</h1>
+      <p class="hero-subtitle">“Your Guide to Bus Routes Across Himachal Pradesh”</p>
+
+      <div class="hero-stats">
+        <div class="stat-chip"><span>🏔️</span> HRTC & Private Operators</div>
+        <div class="stat-chip"><span>⭐</span> Luxury Volvo & Himsuta</div>
+        <div class="stat-chip"><span>🌾</span> 1–3 Buses/Day Village Routes</div>
+        <div class="stat-chip"><span>✓</span> 100% Verified Data Sources</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Dual Search Form -->
+  <div class="search-card-container">
+    <div class="search-card">
+      <div class="search-row">
+        <div class="input-group">
+          <label class="input-label" for="search-from"><span>📍 From (Origin)</span></label>
+          <div class="search-input-wrapper">
+            <span class="input-icon">🚩</span>
+            <input type="text" id="search-from" class="search-input" placeholder="e.g. Palampur, Dharamshala, Shimla..." autocomplete="off">
+            <div id="search-from-suggestions" class="suggestions-list"></div>
+          </div>
+        </div>
+
+        <button type="button" id="swap-locations-btn" class="swap-btn" title="Swap From and To">⇄</button>
+
+        <div class="input-group">
+          <label class="input-label" for="search-to"><span>🏁 To (Destination)</span></label>
+          <div class="search-input-wrapper">
+            <span class="input-icon">🎯</span>
+            <input type="text" id="search-to" class="search-input" placeholder="e.g. Chandigarh, Delhi, Pathankot..." autocomplete="off">
+            <div id="search-to-suggestions" class="suggestions-list"></div>
+          </div>
+        </div>
+
+        <button type="button" id="hero-search-submit" class="search-action-btn">🔍 Search Buses</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Views Rendering Container -->
+  <main id="main-content"></main>
+
+  <!-- Footer -->
+  <footer style="background: var(--primary-navy); color: white; padding: 2.5rem 1.5rem 4rem; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 4rem;">
+    <div style="max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;">
+      <div>
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: 1.2rem; margin-bottom: 0.5rem; color: #38bdf8;">🏔️ HIMALAYAN ROUTES</div>
+        <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+          Single comprehensive bus information platform for Himachal Pradesh. From the biggest Volvo service to the smallest village bus — every Himalayan route matters.
+        </p>
+      </div>
+      <div>
+        <h4 style="font-weight: 700; margin-bottom: 0.75rem; color: white;">Explore Sections</h4>
+        <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.85rem; color: #cbd5e1;">
+          <a data-view="hrtc" style="cursor: pointer;">HRTC Depots & Services</a>
+          <a data-view="volvo" style="cursor: pointer;">HRTC Volvo & Himsuta</a>
+          <a data-view="private" style="cursor: pointer;">Private Bus Operators Directory</a>
+          <a data-view="local" style="cursor: pointer;">Rural Village Routes (1-3/day)</a>
+          <a data-view="districts" style="cursor: pointer;">Explore All 12 Districts</a>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-weight: 700; margin-bottom: 0.75rem; color: white;">Data Verification & Sources</h4>
+        <p style="font-size: 0.82rem; color: #94a3b8; line-height: 1.5;">
+          Data is verified via official HRTC timetables, operator tickets, and local passenger submissions. Always check the "Last Verified" date before travelling.
+        </p>
+        <div style="margin-top: 0.75rem;">
+          <span class="verification-status-badge status-verified">✓ Official HRTC Verified</span>
+        </div>
+      </div>
+    </div>
+    <div style="max-width: 1280px; margin: 2rem auto 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1rem; font-size: 0.78rem; color: #64748b;">
+      © 2026 Himalayan Routes Portal. Built for Himachal Pradesh Passengers & Commuters.
+    </div>
+  </footer>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <a class="mobile-nav-item active" data-view="home">
+      <span class="mobile-nav-icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a class="mobile-nav-item" data-view="search">
+      <span class="mobile-nav-icon">🔍</span>
+      <span>Search</span>
+    </a>
+    <a class="mobile-nav-item" data-view="hrtc">
+      <span class="mobile-nav-icon">🏔️</span>
+      <span>HRTC</span>
+    </a>
+    <a class="mobile-nav-item" data-view="local">
+      <span class="mobile-nav-icon">🌾</span>
+      <span>Local</span>
+    </a>
+    <a class="mobile-nav-item" data-view="admin">
+      <span class="mobile-nav-icon">🛡️</span>
+      <span>Admin</span>
+    </a>
+  </nav>
+
+  <!-- MODAL 1: ADD NEW PRIVATE OPERATOR -->
+  <div id="modal-add-operator-backdrop" class="modal-backdrop">
+    <div class="modal-dialog">
+      <button type="button" id="modal-close-add-op" class="modal-close-btn">✕</button>
+      <h2 class="modal-title">+ ADD NEW PRIVATE OPERATOR</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        Submit a new private operator or route for Himachal Pradesh. Submissions are reviewed by administrators before receiving a <strong>✓ Verified</strong> badge.
+      </p>
+
+      <form id="form-add-operator">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="op-name">Operator Name *</label>
+            <input type="text" id="op-name" class="form-control" placeholder="e.g. New Rana Travel" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="op-hq">Headquarters / Location *</label>
+            <input type="text" id="op-hq" class="form-control" placeholder="e.g. Palampur, Kangra" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="op-district">Operating District *</label>
+            <select id="op-district" class="form-control">
+              <option value="Kangra">Kangra</option>
+              <option value="Shimla">Shimla</option>
+              <option value="Mandi">Mandi</option>
+              <option value="Kullu">Kullu</option>
+              <option value="Chamba">Chamba</option>
+              <option value="Solan">Solan</option>
+              <option value="Una">Una</option>
+              <option value="Hamirpur">Hamirpur</option>
+              <option value="Bilaspur">Bilaspur</option>
+              <option value="Sirmaur">Sirmaur</option>
+              <option value="Kinnaur">Kinnaur</option>
+              <option value="Lahaul & Spiti">Lahaul & Spiti</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="op-contact">Contact Info / Phone</label>
+            <input type="text" id="op-contact" class="form-control" placeholder="+91 98160-XXXXX">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="op-origin">Route Starting Point *</label>
+            <input type="text" id="op-origin" class="form-control" placeholder="e.g. Baijnath" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="op-destination">Destination *</label>
+            <input type="text" id="op-destination" class="form-control" placeholder="e.g. Chandigarh" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="op-deptime">Departure Time</label>
+            <input type="text" id="op-deptime" class="form-control" placeholder="e.g. 07:30 AM">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="op-arrtime">Arrival Time</label>
+            <input type="text" id="op-arrtime" class="form-control" placeholder="e.g. 11:30 AM">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="op-bustype">Bus Type</label>
+          <select id="op-bustype" class="form-control">
+            <option value="Private Ordinary">Private Ordinary</option>
+            <option value="Private Luxury Bus">Private Luxury Bus</option>
+            <option value="Private AC Volvo">Private AC Volvo</option>
+            <option value="Local Village Bus">Local Village Bus (1-3/day)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="op-source">Source / Reference *</label>
+          <input type="text" id="op-source" class="form-control" placeholder="e.g. Conductor Card / Bus Stand Notice Board" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="op-submitter">Your Name (Passenger/Operator)</label>
+          <input type="text" id="op-submitter" class="form-control" placeholder="e.g. Vikas Sharma">
+        </div>
+
+        <button type="submit" class="btn-primary-block">Submit for Verification</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: REPORT INCORRECT INFORMATION -->
+  <div id="modal-report-backdrop" class="modal-backdrop">
+    <div class="modal-dialog">
+      <button type="button" id="modal-close-report" class="modal-close-btn">✕</button>
+      <h2 class="modal-title">⚠️ Report Incorrect Information</h2>
+      <p id="report-route-label" style="font-weight: 700; color: var(--ice-cyan); margin-bottom: 1rem;"></p>
+
+      <form id="form-report-issue">
+        <div class="form-group">
+          <label class="form-label" for="rep-type">Issue Type *</label>
+          <select id="rep-type" class="form-control">
+            <option value="Wrong Timing">Wrong Timing</option>
+            <option value="Route Discontinued">Route Discontinued</option>
+            <option value="Wrong Operator">Wrong Operator</option>
+            <option value="Wrong Bus Type">Wrong Bus Type</option>
+            <option value="Wrong Fare">Wrong Fare</option>
+            <option value="New Route / Timings Changed">New Route / Timings Changed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="rep-desc">Description of Correct Information *</label>
+          <textarea id="rep-desc" class="form-control" rows="3" placeholder="Please describe the updated timing or reason for report..." required></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="rep-name">Your Name</label>
+            <input type="text" id="rep-name" class="form-control" placeholder="e.g. Anil Kumar">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rep-contact">Your Contact (Phone/Email)</label>
+            <input type="text" id="rep-contact" class="form-control" placeholder="e.g. 98160-XXXXX">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary-block" style="background: var(--primary-navy);">Submit Report to Admin</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- ES Module Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
